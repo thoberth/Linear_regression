@@ -7,23 +7,21 @@ if __name__ == "__main__":
 	y = np.array(df['price']).reshape(-1, 1).astype('float64')
 
 	# INITIALISATION DE THETA0 ET THETA1
-	theta = np.zeros((2, 1)).astype('float64')
+	thetas = np.zeros((2, 1)).astype('float64')
 
 	# NORMALISATION DES DONNÉES
 	x_norm, x_mean, x_std = normalize(X)
 	y_norm, y_mean, y_std = normalize(y)
 
-	# PREMIERE PREDICTION SANS AVOIR ENTRAINER L'ALGO
-	y_hat = predict(theta, X)
-
 	# ENTRAINEMENT DES DONNÉES
-	theta = train(x_norm, y_norm, theta)
+	thetas = train(x_norm, y_norm, thetas)
 
-	# SECONDE PREDICTION APRES ENTRAINEMENT DES DONNÉES
-	y_hat2 = predict(theta, x_norm)
-
-	# CALCUL DE LA FONCTION COUT
-	loss = loss_function(y_hat2, y_norm)
-
-	# DENORMALISATION DE NOS DONNÉES
-	y_hat2 = denormalize(y_hat2, y_mean, y_std)
+	# ENREGISTREMENT DES THETAS ET DES VALEURS POUR DENORMALISER LE RESULTAT
+	to_save = {
+		"thetas": thetas, 
+		"y_mean": y_mean,
+		"y_std": y_std,
+		"x_mean": x_mean,
+		"x_std": x_std
+		}
+	save_thetas(to_save)
